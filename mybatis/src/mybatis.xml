@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--
+        设置与数据库交互的环境
+        例如二级缓存，延迟加载策略等
+        配置的目的是为了更有效的查询表中的数据
+
+        基础操作
+            对于常用的查询字段，设置索引
+        高级操作
+            使用nosql数据库，redis
+        专业操作
+            Elasticsearch与Solr
+            针对电商行业
+    -->
+    <!--<settings>-->
+    <!--    <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+    <!--</settings>-->
+
+    <properties resource="jdbc.properties"/>
+
+    <typeAliases>
+        <!--
+            起别名方式一：
+            未指定的类分别起别名，别名的命名由我们自己决定
+        -->
+        <typeAlias type="com.bjpowernode.domain.Student" alias="Student"/>
+        <!--
+       起别名方式二：
+       使用package标签批量起名，别名是MyBatis取好的，别名为类名，不区分大小写
+   -->
+        <package name="com.bjpowernode.domain"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--
+        方式一：使用resource属性，指定
+        -->
+        <mapper resource="com/bjpowernode/dao/StudentDao.xml"/>
+        <!--
+        方式二：使用class属性，找到dao层接口的全路径
+        -->
+        <mapper class="com.bjpowernode.dao.StudentDao"/>
+        <!--
+       方式三 package批量注册，找到dao层接口的全路径
+       -->
+        <package name="com.bjpowernode.dao"/>
+    </mappers>
+</configuration>
